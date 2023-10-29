@@ -9,6 +9,7 @@ import { RouterProvider } from 'react-router-dom/dist';
 import Cart from './components/Cart';
 import About from './components/About';
 import Shimmer from './components/Shimmer';
+import ProductDetail from './components/ProductDetail';
 /** 
  * Lazy Loading
  * Code splitting
@@ -45,6 +46,10 @@ const appRouter  =  createBrowserRouter(
           //   <About/>
           // </Suspense>
           element:<About/>
+        },
+        {
+          path:"/product/:id",
+          element:<ProductDetail/>
         }
       ]
     }

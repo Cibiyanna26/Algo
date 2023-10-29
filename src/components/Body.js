@@ -6,19 +6,17 @@ import { useState } from "react";
 import Shimmer from "./Shimmer";
 import useOnline from "../common/useOnline";
 import TopRestaurant from "./TopProduct";
-
-
+import Categories from "./Categories";
+import { Link } from "react-router-dom";
 const Search = () => {
     
     const[searchText,setSearchText]=useState("");
-    // const [allRestaurant,setAllRestaurant] = useState([]);
-    // const [ filteredMovieCard,setFilteredMovie ] = useState([]);
     const [top10,settop10] = useState(false);
 
     const [allphone,setallphone] = useState([]);
     const [filteredPhone,setFilteredPhone] = useState([]);
 
-    // console.log(filteredPhone);
+
     function OnChangeHandler(e){
         setSearchText(e.target.value);
     }
@@ -31,6 +29,8 @@ const Search = () => {
         console.log(filteredPro);
         settop10(false);
     }
+
+   
 
     function updateTopPro(TopfilteredProducts){
         console.log("updated");
@@ -52,22 +52,10 @@ const Search = () => {
 
     
     const Fetch = async () =>{
-        // const data = await fetch(
-        //     "https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.2194391&lng=78.16772360000004&page_type=DESKTOP_WEB_LISTING"
-        // );
+       
         const sdata = await fetch('https://dummyjson.com/products/')
-        
-        // const json = await data.json();
-        // console.log('fetch',json);
-
         const sjson = await sdata.json();
         console.log('sfetch',sjson.products);
-        // setFilteredMovie(
-        // json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);  //? optional data
-        
-        // setAllRestaurant(
-        //     json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants); 
-
         setallphone(sjson.products);
         setFilteredPhone(sjson.products);
     }
@@ -85,12 +73,15 @@ const Search = () => {
                    
                 </div>  
                 <div  className="">
-                    <h1 className="text-5xl text-green-500 font-bold leading-[50px]">Explore <span className="text-rose-500">&</span> Eat  <span className="text-yellow-400">Delicious Food</span></h1>
+                    <h1 className="text-5xl text-green-500 font-bold leading-[50px]">Explore <span className="text-rose-500">&</span> Buy  <span className="text-yellow-400">Beautiful Products</span></h1>
                 </div>
             </div>
             <div className="py-8 flex justify-center items-center  text-2xl font-bold bg-gray-200">
-                <h1>Food available in the shop</h1>
+                <h1>Products available in the shop</h1>
                 
+            </div>
+            <div className="flex p-4">
+                <Categories filterCato={updateTopPro} allproducts={allphone}/>
             </div>
             <div className="flex justify-end">
                     {top10===true ?
@@ -106,9 +97,15 @@ const Search = () => {
                             
                             { 
                                 filteredPhone && filteredPhone.map && filteredPhone.map((res,ind)=>{
+                                    console.log(res.id);
                                     return (
                                         <>
-                                            <Card_piece data = {res} key={ind} />
+                                            <Link 
+                                                to={"/product/"+res.id}
+                                                state={{data:res}}
+                                            >
+                                                <Card_piece data = {res} key={res.id} />
+                                            </Link>
                                         </>
                                     )
                                 })
