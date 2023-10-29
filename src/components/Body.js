@@ -6,6 +6,7 @@ import Card_piece from '../components/Card_piece';
 import { useState } from "react";
 import Shimmer from "./Shimmer";
 import useOnline from "../common/useOnline";
+import TopRestaurant from "./TopRestarunt";
 
 
 const Search = () => {
@@ -13,11 +14,7 @@ const Search = () => {
     const[searchText,setSearchText]=useState("");
     const [allRestaurant,setAllRestaurant] = useState([]);
     const [ filteredMovieCard,setFilteredMovie ] = useState([]);
-    
-    
-
-   
-
+    const [top10,settop10] = useState(false);
     console.log(filteredMovieCard);
     function OnChangeHandler(e){
         setSearchText(e.target.value);
@@ -29,7 +26,14 @@ const Search = () => {
         })
         setFilteredMovie(filteredRes);
         console.log(filteredRes);
+        settop10(false);
     }
+
+    function updateTopRes(filteredTopRestaurant){
+        setFilteredMovie(filteredTopRestaurant);
+        settop10(true);
+    }
+
 
     useEffect(()=>{
         Fetch();
@@ -40,6 +44,7 @@ const Search = () => {
     if(!isonline){
         return <h1>Looks like you don't have money to pay for internet</h1>
     }
+
     
     const Fetch = async () =>{
         const data = await fetch(
@@ -72,6 +77,15 @@ const Search = () => {
             </div>
             <div className="py-8 flex justify-center items-center  text-2xl font-bold bg-gray-200">
                 <h1>Food available in the shop</h1>
+                
+            </div>
+            <div className="flex justify-end">
+                    {top10==true ?
+                        <h1 className="text-2xl text-teal-800 p-5 font-bold">Top Rated Restaurant</h1>
+                    :
+                        <TopRestaurant restaurants={allRestaurant} updateTopRes={updateTopRes}/>
+                    }
+                    
             </div>
             {   filteredMovieCard.length ==0 ? <Shimmer/> : 
                     <div className="w-full">
