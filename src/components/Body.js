@@ -1,36 +1,41 @@
 import React, { useEffect } from "react";
 import { Component } from "react";
-import Card from "./Cards";
 import states from "../utils_data/data";
 import Card_piece from '../components/Card_piece';
 import { useState } from "react";
 import Shimmer from "./Shimmer";
 import useOnline from "../common/useOnline";
-import TopRestaurant from "./TopRestarunt";
+import TopRestaurant from "./TopProduct";
 
 
 const Search = () => {
     
     const[searchText,setSearchText]=useState("");
-    const [allRestaurant,setAllRestaurant] = useState([]);
-    const [ filteredMovieCard,setFilteredMovie ] = useState([]);
+    // const [allRestaurant,setAllRestaurant] = useState([]);
+    // const [ filteredMovieCard,setFilteredMovie ] = useState([]);
     const [top10,settop10] = useState(false);
-    console.log(filteredMovieCard);
+
+    const [allphone,setallphone] = useState([]);
+    const [filteredPhone,setFilteredPhone] = useState([]);
+
+    // console.log(filteredPhone);
     function OnChangeHandler(e){
         setSearchText(e.target.value);
     }
 
-    function filterRestaurant(){
-        const filteredRes = allRestaurant.filter((res)=>{
-            return res.info.name.toLowerCase().includes(searchText.toLowerCase());
+    function filterProducts(){
+        const filteredPro = allphone.filter((res)=>{
+            return res.brand.toLowerCase().includes(searchText.toLowerCase());
         })
-        setFilteredMovie(filteredRes);
-        console.log(filteredRes);
+        setFilteredPhone(filteredPro);
+        console.log(filteredPro);
         settop10(false);
     }
 
-    function updateTopRes(filteredTopRestaurant){
-        setFilteredMovie(filteredTopRestaurant);
+    function updateTopPro(TopfilteredProducts){
+        console.log("updated");
+        console.log(TopfilteredProducts);
+        setFilteredPhone(TopfilteredProducts);
         settop10(true);
     }
 
@@ -47,16 +52,24 @@ const Search = () => {
 
     
     const Fetch = async () =>{
-        const data = await fetch(
-            "https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.2194391&lng=78.16772360000004&page_type=DESKTOP_WEB_LISTING"
-        );
-        const json = await data.json();
-        console.log('fetch',json);
-        setFilteredMovie(
-        json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);  //? optional data
+        // const data = await fetch(
+        //     "https://www.swiggy.com/dapi/restaurants/list/v5?lat=11.2194391&lng=78.16772360000004&page_type=DESKTOP_WEB_LISTING"
+        // );
+        const sdata = await fetch('https://dummyjson.com/products/')
         
-        setAllRestaurant(
-            json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants); 
+        // const json = await data.json();
+        // console.log('fetch',json);
+
+        const sjson = await sdata.json();
+        console.log('sfetch',sjson.products);
+        // setFilteredMovie(
+        // json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants);  //? optional data
+        
+        // setAllRestaurant(
+        //     json?.data?.cards[2]?.card?.card?.gridElements?.infoWithStyle?.restaurants); 
+
+        setallphone(sjson.products);
+        setFilteredPhone(sjson.products);
     }
     return (
         <div className="search-movie w-full bg-gray-200">
@@ -67,7 +80,7 @@ const Search = () => {
                                                                                 border-0  border-gray-800 outline-none rounded-t-lg   ">
 
                         </input>
-                        <button onClick={filterRestaurant} className="rounded-xl hover:bg-red-700 text-white bg-rose-600 py-2 px-3">Search</button>
+                        <button onClick={filterProducts} className="rounded-xl hover:bg-red-700 text-white bg-rose-600 py-2 px-3">Search</button>
                     
                    
                 </div>  
@@ -80,22 +93,22 @@ const Search = () => {
                 
             </div>
             <div className="flex justify-end">
-                    {top10==true ?
-                        <h1 className="text-2xl text-teal-800 p-5 font-bold">Top Rated Restaurant</h1>
+                    {top10===true ?
+                        <h1 className="text-2xl text-teal-800 p-5 font-bold">Top Rated products</h1>
                     :
-                        <TopRestaurant restaurants={allRestaurant} updateTopRes={updateTopRes}/>
+                        <TopRestaurant products={allphone} updateTopPro={updateTopPro}/>
                     }
                     
             </div>
-            {   filteredMovieCard.length ==0 ? <Shimmer/> : 
+            {   filteredPhone.length ==0 ? <Shimmer/> : 
                     <div className="w-full">
                         <div className="bg-gray-200 flex flex-row  gap-x-[50px] gap-y-[50px] flex-wrap items-center container mx-auto justify-around pb-10">
                             
                             { 
-                                filteredMovieCard && filteredMovieCard.map && filteredMovieCard.map((res,ind)=>{
+                                filteredPhone && filteredPhone.map && filteredPhone.map((res,ind)=>{
                                     return (
                                         <>
-                                            <Card_piece data = {res} key={ind}/>
+                                            <Card_piece data = {res} key={ind} />
                                         </>
                                     )
                                 })

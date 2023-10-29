@@ -5,20 +5,21 @@ const Card_piece = (props)=>{
     var {data,key} = props;
     console.log(data)
     
-    data = data.info;
+    
                 
     return (
         
             <>
-            <div key={key} className="max-w-[300px]  max-h-[350px] bg-white rounded-xl p-2 flex flex-col gap-y-5  hover:border-b-gray-800 border-b-8 transition ease-in-out">
-                <div className="flex-1  overflow-hidden rounded-xl min-h-[130px] ">
-                    <img src={CDN_URL + data.cloudinaryImageId} alt="image" className="object-contain "></img>
+            <div key={key} className="w-[300px]  h-[400px] bg-white rounded-xl p-2 flex flex-col gap-y-5  hover:border-b-gray-800 border-b-8 transition ease-in-out">
+                <div className="flex  overflow-hidden rounded-xl h-[200px] ">
+                    {/* <img src={CDN_URL + data.cloudinaryImageId} alt="image" className="object-contain "></img> */}
+                    <img src={data.thumbnail} alt="image" className="object-contain "></img>
                 </div>
                 <div className="flex flex-col gap-y-1 overflow-hidden">
-                    <h1>{data.name}</h1>
-                    <p>{data.cuisines}</p>
-                    <h4>{data.avgRating} </h4>
-                    <span>500</span>
+                    <h1>{data.brand}</h1>
+                    <p>{data.description}</p>
+                    <h4>{data.rating} </h4>
+                    <span>{data.price}</span>
                 </div>
                 
             </div> 
