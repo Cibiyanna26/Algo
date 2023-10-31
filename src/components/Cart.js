@@ -1,50 +1,61 @@
 import React from "react";
 import { useSelector } from "react-redux/es/hooks/useSelector";
-
-
+import { useDispatch } from "react-redux";
+import { removeItem } from "../common/cartSlice";
 const Cart=()=> {
     const cartItems = useSelector((store)=>store.cart.items);
+
+    const dispatch = useDispatch();
+
+    const handleRemove = (item)=>{
+        console.log(item);
+        dispatch(removeItem(item));
+    }
+
     let Tprice=0,Tdiscount=0,Tamount=0;
     for(let i=0; i<cartItems.length; i++) {
         Tprice += cartItems[i].price;
         Tdiscount += cartItems[i].discountPercentage;
     }
     Tamount = Tprice - (Tdiscount%100);
+
     return (
         <section className="w-full bg-gray-200 p-4">
             <div className="lg:w-4/5 mx-auto">
                 <div className="flex lg:flex-row flex-col gap-x-[5%] lg:gap-y-0 gap-y-5">
-                    <div className="bg-white p-3 lg:w-[65%] flex flex-col gap-y-5">
+                    <div className="bg-white p-3 lg:w-[65%] flex flex-col gap-y-5 shadow-sm shadow-gray-500">
                         <div className="text-center">
                             <h1 className="text-2xl font-bold text-cyan-800">G-Grocery</h1>
                         </div>
                         <div className="flex flex-col gap-y-3  overflow-y-scrollbar no-scrollbar">
                             {cartItems.map((items)=>{
-                               return   <div className="flex lg:flex-row flex-col gap-y-5   gap-x-[5%] p-2 border-b-2 border-dotted border-b-gray-300">
+                               return   <div className="flex lg:flex-row flex-col gap-y-5  shadow-sm shadow-gray-500
+                                                        gap-x-[5%] p-2  border-b-gray-300" 
+                                                        key={items.id}>
                                             <div className="lg:w-[25%]  rounded-xl overflow-hidden h-[150px] ">
                                                 <img src={items.thumbnail} className="w-full h-full object-contain"></img>
                                             </div>
                                             <div className="lg:w-[75%] flex flex-col gap-y-3">
                                                 <h1 className="text-2xl font-bold">{items.title}</h1>
-                                                <p className="text-lg font-thin">{items.description}</p>
+                                                <p className="text-lg font-light">{items.description}</p>
 
                                                 <p className="text-lg font-medium"> 
                                                     ₹{items.price}<span className="text-[13px] font-extralight ml-2">M.R.P</span>
                                                     <span className="text-[15px] ml-5 text-rose-400">{items.discountPercentage}% <span className="text-black">offer</span></span>
                                                 </p>
                                                 <div className="text-right">
-                                                    <button className="bg-red-500 py-2 px-3 rounded-xl text-white">Remove</button>
+                                                    <button className="bg-red-500 py-2 px-3 rounded-xl text-white" onClick={()=>handleRemove(items)}>Remove</button>
                                                 </div>
                                             </div>
                                         </div>
                             })}
                             
                         </div>
-                        <div className="p-4 lg:text-right text-center rounded-xl bg-blue-100">
+                        <div className="p-4 lg:text-right text-center rounded-xl bg-blue-100 shadow-sm">
                             <button className="py-4 px-5 bg-blue-500 rounded-xl hover:bg-blue-700 text-white">PURCHASE</button>
                         </div>
                     </div>
-                    <div className="bg-white p-5 lg:w-[35%] h-[400px]">
+                    <div className="bg-white p-5 lg:w-[35%] h-[400px] shadow-sm shadow-gray-500">
                             <div className="text-center py-3 border-b-2 border-dotted border-b-gray-300">
                                 <h1 className="text-2xl font-bold">PRICE DETAILS</h1>
                             </div>

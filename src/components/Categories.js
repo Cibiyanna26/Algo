@@ -15,18 +15,22 @@ const Categories =(props)=>{
      
     return(
         <>  
-             <div className="py-8 flex justify-center items-center  text-2xl font-bold bg-gray-200">
+             <div className="py-8 flex justify-center items-center  lg:text-2xl text-xl border-b-2 border-b-white border-dotted font-bold bg-gray-200">
                 <h1>Products available in the shop</h1>
                 
             </div>
-            <div className="flex justify-evenly gap-x-5 gap-y-8 flex-wrap p-4">
+            <div className="flex justify-evenly lg:gap-x-5 lg:gap-y-8 gap-x-2 gap-y-3 flex-wrap p-4 border-b-2 border-dotted border-b-white">
 
             {
                 category && category.map && category.map((cat,ind)=>{
             
                     return(
                         <div key={ind}>
-                            <button onClick={()=>filterCat(cat)} className="py-2 px-3 bg-blue-700 rounded-xl text-white">{cat}</button>
+                            <button 
+                                onClick={()=>filterCat(cat)} 
+                                className="lg:py-2 lg:px-3 bg-blue-700 rounded-xl text-white lg:text-sm text-xs py-1 px-2">
+                                    {cat}
+                            </button>
                         </div>
                     )
                 })
